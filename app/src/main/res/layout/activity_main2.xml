@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pesan diterima akan muncul di sini" />
+
+    <EditText
+        android:id="@+id/editReply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Balas pesan..." />
+
+    <Button
+        android:id="@+id/btnReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kirim balasan ke Activity 1" />
+</LinearLayout>
