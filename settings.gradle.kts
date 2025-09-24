@@ -1,14 +1,14 @@
+// settings.gradle.kts
+
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
+        // Add JitPack if the library is hosted there
+        // maven { url = uri("https://jitpack.io") }
+        // Add any other custom Maven repository if needed
+        // maven { url = uri("https://url.to.your.custom.repository") }
     }
 }
 dependencyResolutionManagement {
@@ -16,9 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Add JitPack if the library is hosted there
+        // maven { url = uri("https://jitpack.io") }
+        // Add any other custom Maven repository if needed
+        // maven { url = uri("https://url.to.your.custom.repository") }
     }
 }
 
 rootProject.name = "Tugas_2"
 include(":app")
- 

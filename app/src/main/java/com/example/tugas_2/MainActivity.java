@@ -2,36 +2,30 @@ package com.example.tugas_2;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri; // Import Uri
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore; // For setting image URI directly
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.ScrollingMovementMethod;
+import android.text.style.AlignmentSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView; // Import ImageView
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.tugas_2.Constants;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan; // Untuk warna latar sederhana
-import android.text.style.DrawableMarginSpan; // Lebih kompleks, mungkin tidak untuk awal
-import android.text.style.AlignmentSpan;
-import android.text.Layout;
-import android.text.style.LineBackgroundSpan; // Alternatif lain
-import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
-import android.text.style.ReplacementSpan; // Sangat kompleks, untuk menggambar sendiri
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan; // Ensure this is android.text.style.StyleSpan
-import android.graphics.Typeface;
-import android.text.ParcelableSpan;
+
+// Import your custom BubbleSpan if it's in the same package (no import needed)
+// or explicit import: import com.example.tugas_2.BubbleSpan;
+// Import Constants: import com.example.tugas_2.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,14 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imagePreview;
     private Uri selectedImageUri = null;
 
-    // Launcher for getting image from gallery
     private final ActivityResultLauncher<String> pickImageLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
                     imagePreview.setImageURI(selectedImageUri);
                     imagePreview.setVisibility(View.VISIBLE);
-                    appendToLog("Saya: [Gambar dipilih]", true); // CORRECTED
+                    // Don't log here, log when actually sending
                 }
             });
 
@@ -58,14 +51,25 @@ public class MainActivity extends AppCompatActivity {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             if (data != null) {
-                                String reply = data.getStringExtra(Constants.KEY_REPLY);
-                                if (reply != null) {
-                                    appendToLog("Activity 2: " + reply, false); // CORRECTED
-                                    Toast.makeText(MainActivity.this, "Balasan diterima: " + reply, Toast.LENGTH_SHORT).show();
+                                String senderName = "Activity 2"; // From whom the reply is
+                                boolean hasReplied = false;
+
+                                // *** FIXED HERE ***
+                                // Changed Constants.KEY_REPLY_FROM_ACTIVITY2 to Constants.KEY_REPLY
+                                String replyText = data.getStringExtra(Constants.KEY_REPLY);
+                                if (replyText != null && !replyText.isEmpty()) {
+                                    appendToLog(senderName + ": " + replyText, false);
+                                    hasReplied = true;
                                 }
-                                String imageUriString = data.getStringExtra(Constants.KEY_IMAGE_URI);
-                                if (imageUriString != null) {
-                                    appendToLog("Activity 2: [Menerima Gambar - URI: " + imageUriString + "]", false); // CORRECTED & clarified text
+
+                                String imageUriStringReply = data.getStringExtra(Constants.KEY_IMAGE_URI);
+                                if (imageUriStringReply != null) {
+                                    appendToLog(senderName + ": [Gambar diterima]", false);
+                                    // You could optionally parse and display this imageUriStringReply if needed
+                                    hasReplied = true;
+                                }
+                                if(hasReplied){
+                                    Toast.makeText(MainActivity.this, "Balasan diterima", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -76,80 +80,68 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editMessage = findViewById(R.id.editMessage); // Initialize EditText
+        editMessage = findViewById(R.id.editMessage);
         textConversationLog = findViewById(R.id.textConversationLog);
-        btnSend = findViewById(R.id.btnSend); // Initialize btnSend
+        btnSend = findViewById(R.id.btnSend);
         btnSelectImage = findViewById(R.id.btnSelectImage);
         imagePreview = findViewById(R.id.imagePreview);
 
         textConversationLog.setText("");
-        textConversationLog.setMovementMethod(new android.text.method.ScrollingMovementMethod());
+        textConversationLog.setMovementMethod(new ScrollingMovementMethod());
 
-        btnSelectImage.setOnClickListener(v -> {
-            pickImageLauncher.launch("image/*");
-        });
+        btnSelectImage.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
 
         btnSend.setOnClickListener(view -> {
             String messageText = editMessage.getText().toString().trim();
-
             if (messageText.isEmpty() && selectedImageUri == null) {
                 Toast.makeText(this, "Pesan atau gambar tidak boleh kosong", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             Intent intentToActivity2 = new Intent(this, MainActivity2.class);
-            String logEntry = ""; // This variable will be built and then passed to appendToLog
+            String logEntryContent = ""; // Content part of the log
 
             if (!messageText.isEmpty()) {
-                // We'll let appendToLog add "Saya: " or "Activity 2: " for styling consistency
-                logEntry += messageText; // Just the message content
+                logEntryContent += messageText;
                 intentToActivity2.putExtra(Constants.KEY_MESSAGE, messageText);
             }
 
             if (selectedImageUri != null) {
-                if (!logEntry.isEmpty()) logEntry += "\n"; // Add newline if there's text before image info
-                logEntry += "[Gambar Terkirim]"; // Placeholder text for the image in the log
+                if (!logEntryContent.isEmpty()) logEntryContent += "\n";
+                logEntryContent += "[Gambar Terkirim]";
                 intentToActivity2.putExtra(Constants.KEY_IMAGE_URI, selectedImageUri.toString());
                 intentToActivity2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-            // Construct the full display text for the log, including the sender prefix
-            String fullLogTextForDisplay = "Saya: " + logEntry;
-            appendToLog(fullLogTextForDisplay, true); // true for message sent from this activity
+            appendToLog("Saya: " + logEntryContent, true); // Log self message
 
             startChatForResult.launch(intentToActivity2);
 
+            // Clear inputs
             editMessage.setText("");
-            if (imagePreview != null) {
-                imagePreview.setImageURI(null);
-                imagePreview.setVisibility(View.GONE);
-            }
+            imagePreview.setImageURI(null);
+            imagePreview.setVisibility(View.GONE);
             selectedImageUri = null;
         });
     }
 
     private void appendToLog(String text, boolean isSentMessage) {
         if (textConversationLog == null || text.isEmpty()) return;
-
         if (textConversationLog.length() > 0) {
             textConversationLog.append("\n\n");
         }
 
         SpannableString spannableText = new SpannableString(text);
+        Layout.Alignment alignment = isSentMessage ? Layout.Alignment.ALIGN_OPPOSITE : Layout.Alignment.ALIGN_NORMAL;
+        spannableText.setSpan(new AlignmentSpan.Standard(alignment), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        if (isSentMessage) {
-            spannableText.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableText.setSpan(new BubbleSpan(this, ContextCompat.getColor(this, R.color.teal_200),
-                            ContextCompat.getColor(this, android.R.color.white), true),
-                    0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            spannableText.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_NORMAL), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableText.setSpan(new BubbleSpan(this, ContextCompat.getColor(this, android.R.color.white),
-                            ContextCompat.getColor(this, android.R.color.black), false),
-                    0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+        int bubbleColor = isSentMessage ? ContextCompat.getColor(this, R.color.teal_700) // Example sent color
+                : ContextCompat.getColor(this, R.color.grey_200); // Example received color
+        int textColor = isSentMessage ? ContextCompat.getColor(this, android.R.color.white)
+                : ContextCompat.getColor(this, android.R.color.black);
 
-        // Apply bold/italic based on the prefix *within* the passed 'text'
+        spannableText.setSpan(new BubbleSpan(this, bubbleColor, textColor, isSentMessage), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         if (text.startsWith("Saya:")) {
             spannableText.setSpan(new StyleSpan(Typeface.BOLD), 0, "Saya:".length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else if (text.startsWith("Activity 2:")) {
@@ -157,13 +149,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         textConversationLog.append(spannableText);
-
+        // Auto-scroll logic
         final Layout layout = textConversationLog.getLayout();
         if (layout != null) {
             int scrollDelta = layout.getLineBottom(textConversationLog.getLineCount() - 1)
                     - textConversationLog.getScrollY() - textConversationLog.getHeight();
-            if (scrollDelta > 0)
-                textConversationLog.scrollBy(0, scrollDelta);
+            if (scrollDelta > 0) textConversationLog.scrollBy(0, scrollDelta);
         }
     }
 }

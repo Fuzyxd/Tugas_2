@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Your existing colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="teal_200">#FF03DAC5</color> <!-- Contoh, ganti dengan warna bubble Anda -->
-    <color name="wa_green_light">#DCF8C6</color> <!-- Contoh warna bubble keluar WhatsApp -->
+
+    <!-- Define teal_700 and grey_200 -->
+    <color name="teal_700">#FF018786</color>  <!-- Standard Material Design Teal 700 -->
+    <color name="grey_200">#FFEEEEEE</color>  <!-- Example for a light grey (Material Grey 200) -->
+
+    <!-- You might also have theme colors like these (examples) -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color> <!-- Standard Material Design Teal 200 -->
+
 </resources>

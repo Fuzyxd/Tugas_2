@@ -24,8 +24,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-// Ensure BubbleSpan is in its own file and can be imported
-// import com.example.tugas_2.BubbleSpan;
+// Ensure  is in its own file and can be imported
+// import com.example.tugas_2.;
 // Ensure Constants is imported
 // import com.example.tugas_2.Constants;
 
@@ -133,7 +133,7 @@ public class MainActivity2 extends AppCompatActivity {
         Layout.Alignment alignment = isSentMessage ? Layout.Alignment.ALIGN_OPPOSITE : Layout.Alignment.ALIGN_NORMAL;
         spannableText.setSpan(new AlignmentSpan.Standard(alignment), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        // Use your BubbleSpan here
+        // Use your  here
         int bubbleColor = isSentMessage ? ContextCompat.getColor(this, R.color.teal_200) : ContextCompat.getColor(this, android.R.color.white);
         int textColor = isSentMessage ? ContextCompat.getColor(this, android.R.color.white) : ContextCompat.getColor(this, android.R.color.black);
         spannableText.setSpan(new BubbleSpan(this, bubbleColor, textColor, isSentMessage), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
