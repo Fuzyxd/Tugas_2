@@ -1,19 +1,76 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:id="@+id/main">
 
-    <EditText
-        android:id="@+id/editMessage"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Percakapan (Activity 1)"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/textConversationLog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
+        android:background="#E0E0E0"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:text="Log Percakapan:\n"/>
+
+    <!-- Image Preview -->
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:contentDescription="Image preview" />
+    <!-- Set visibility to gone initially -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSelectImage"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Pilih Gambar"
+        app:icon="@android:drawable/ic_menu_gallery" /> <!-- System icon -->
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textFieldMessageLayout"
+        style="?attr/textInputOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tulis pesan..." />
+        android:hint="Tulis pesan..."
+        app:helperText="Masukkan pesan yang ingin dikirim">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textShortMessage"
+            android:maxLines="1"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kirim ke Activity 2" />
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:text="Kirim"
+        app:icon="@drawable/ic_send" />
+
 </LinearLayout>

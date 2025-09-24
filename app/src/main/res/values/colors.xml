@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="teal_200">#FF03DAC5</color> <!-- Contoh, ganti dengan warna bubble Anda -->
+    <color name="wa_green_light">#DCF8C6</color> <!-- Contoh warna bubble keluar WhatsApp -->
 </resources>

@@ -1,25 +1,75 @@
+<!-- File: res/layout/activity_main2.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".MainActivity2">
 
     <TextView
-        android:id="@+id/textReceived"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pesan diterima akan muncul di sini" />
+        android:id="@+id/textConversationLogActivity2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"
+        android:background="#F0F0F0"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:textAppearance="?attr/textAppearanceBodyMedium"/>
 
-    <EditText
-        android:id="@+id/editReply"
+    <ImageView
+        android:id="@+id/imagePreviewActivity2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:contentDescription="Pratinjau gambar balasan"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Balas pesan..." />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <Button
-        android:id="@+id/btnReply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kirim balasan ke Activity 1" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSelectImageActivity2"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@android:drawable/ic_menu_gallery"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Pilih Gambar untuk Balasan"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldReplyLayout"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Tulis balasan...">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editReply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="1"
+                android:maxLines="5"
+                android:gravity="top"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReply"
+            style="?attr/materialIconButtonFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_send"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Kirim Balasan"/>
+    </LinearLayout>
 </LinearLayout>
